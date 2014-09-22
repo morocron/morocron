@@ -3,7 +3,7 @@
 /**
  * This file is part of the Morocron project.
  *
- * (c) Benoit Maziere <ldf-b.maziere@lagardere-active.com>
+ * (c) Benoit Maziere <benoit.maziere@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,13 +11,15 @@
 
 namespace Morocron\Parser;
 
+use Cron\CronExpression;
+use Morocron\Cron\CronDefinition;
 use Morocron\Exception\FileException;
 use Symfony\Component\Finder\Finder;
 
 /**
  * Class CronTabParser
  * @package Morocron\Parser
- * @author Benoit Maziere <ldf-b.maziere@lagardere-active.com>
+ * @author Benoit Maziere <benoit.maziere@gmail.com>
  */
 class CronTabParser
 {
@@ -91,7 +93,6 @@ class CronTabParser
      */
     protected function setTasks(array $data)
     {
-        $index = 0;
         foreach ($data as $task) {
             if (strpos(trim($task), '#') === 0) {
                 continue;
@@ -99,13 +100,12 @@ class CronTabParser
 
             list($isReadable, $isPeriodic, $taskTimeDefinition, $taskDefinition) = $this->getCommand($task);
             if ($isReadable && $isPeriodic) {
-                $this->validAndPeriodicTasks[] = $this->fillInCronDefinition($index, $taskTimeDefinition, $taskDefinition);
+                $this->validAndPeriodicTasks[] = $this->fillInCronDefinition($taskTimeDefinition, $taskDefinition);
             } elseif ($isReadable && !$isPeriodic) {
-                $this->validAndNonPeriodicTasks[] = $this->fillInCronDefinition($index, $taskTimeDefinition, $taskDefinition);
+                $this->validAndNonPeriodicTasks[] = $this->fillInCronDefinition($taskTimeDefinition, $taskDefinition);
             } elseif (!$isReadable && trim($task) != '') {
-                $this->unreadableTasks[] = $this->fillInCronDefinition($index, $taskTimeDefinition, $taskDefinition);
+                $this->unreadableTasks[] = $this->fillInCronDefinition($taskTimeDefinition, $taskDefinition);
             }
-            $index++;
         }
 
         return $this;
@@ -114,18 +114,16 @@ class CronTabParser
     /**
      * Fill In Cron Definition
      *
-     * @param int $index
      * @param string $taskTimeDefinition
      * @param string $taskDefinition
      *
      * @return array
      */
-    protected function fillInCronDefinition($index, $taskTimeDefinition, $taskDefinition)
+    protected function fillInCronDefinition($taskTimeDefinition, $taskDefinition)
     {
-        return array(
-            'name' => 'Task ' . $index,
-            'cronTimeDefinition' => trim($taskTimeDefinition),
-            'command' => trim($taskDefinition),
+        return new CronDefinition(
+            CronExpression::factory($taskTimeDefinition),
+            trim($taskDefinition)
         );
     }
 
@@ -155,14 +153,13 @@ class CronTabParser
     protected function getCommand($task)
     {
         $task = trim($task);
-        if ('@' === substr($task, 0, 1)) {
+        if (strpos($task, '@') === 0) {
             $taskTimeDefinition = explode(' ', $task, 2);
             return array(
                 (count($taskTimeDefinition) == 2 and $this->getSpecialCronTimeDefinition($taskTimeDefinition[0])) ? $taskTimeDefinition[1] : false,
                 $this->isPeriodic($taskTimeDefinition[0]),
                 $this->getSpecialCronTimeDefinition($taskTimeDefinition[0]),
                 $taskTimeDefinition[1],
-
             );
         } else {
             $taskTimeDefinition = explode(' ', $task, 6);

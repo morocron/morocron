@@ -35,6 +35,18 @@ class CronDefinition
     protected $command;
 
     /**
+     * Constructor.
+     *
+     * @param CronExpression $definition
+     * @param string $command
+     */
+    public function __construct(CronExpression $definition, $command)
+    {
+        $this->definition = $definition;
+        $this->command = $command;
+    }
+
+    /**
      * Get Definition.
      *
      * @return \Cron\CronExpression

@@ -11,6 +11,8 @@
 
 namespace Morocron\Generator;
 
+use Morocron\Parser\CronTabParser;
+
 /**
  * Class Cron Tab Generator
  * @package Morocron\Generator
@@ -49,6 +51,8 @@ class CronTabGenerator
      */
     public function createSortedCronTab($strategy = null)
     {
-
+        $cronTabParser = new CronTabParser();
+        $cronTabParser->computeData($this->source);
+        var_dump($cronTabParser->getValidAndPeriodicTasks());
     }
 }

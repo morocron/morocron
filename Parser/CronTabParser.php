@@ -93,6 +93,10 @@ class CronTabParser
     {
         $index = 0;
         foreach ($data as $task) {
+            if (strpos(trim($task), '#') === 0) {
+                continue;
+            }
+
             list($isReadable, $isPeriodic, $taskTimeDefinition, $taskDefinition) = $this->getCommand($task);
             if ($isReadable && $isPeriodic) {
                 $this->validAndPeriodicTasks[] = $this->fillInCronDefinition($index, $taskTimeDefinition, $taskDefinition);

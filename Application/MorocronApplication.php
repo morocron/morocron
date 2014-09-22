@@ -11,6 +11,7 @@
 
 namespace Morocron\Application;
 
+use Morocron\Command\SortCronCommand;
 use Symfony\Component\Console\Application as AbstractApplication;
 
 /**
@@ -20,5 +21,10 @@ use Symfony\Component\Console\Application as AbstractApplication;
  */
 class MorocronApplication extends AbstractApplication
 {
+    public function __construct()
+    {
+        parent::__construct('morocron');
 
+        $this->add(new SortCronCommand());
+    }
 }

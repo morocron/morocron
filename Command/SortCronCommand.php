@@ -81,11 +81,9 @@ class SortCronCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cronTabGenerator = new CronTabGenerator(
+        return CronTabGenerator::createSortedCronTab(
             (string)$input->getArgument('source'),
             (string)$input->getArgument('destination')
         );
-
-        return $cronTabGenerator->createSortedCronTab();
     }
 }

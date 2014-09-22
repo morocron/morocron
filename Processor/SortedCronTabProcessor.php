@@ -10,6 +10,7 @@
  */
 
 namespace Morocron\Processor;
+use Morocron\Cron\CronTabDefinition;
 
 /**
  * Class SortedCronTabProcessor
@@ -18,5 +19,16 @@ namespace Morocron\Processor;
  */
 class SortedCronTabProcessor
 {
+    /**
+     * Sort
+     *
+     * @param CronTabDefinition $cronTabDefinition
+     * @param $strategy
+     *
+     * @return CronTabDefinition
+     */
+    public function sort(CronTabDefinition $cronTabDefinition, $strategy)
+    {
 
+    }
 }

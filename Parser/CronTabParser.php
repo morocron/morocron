@@ -69,6 +69,7 @@ class CronTabParser
     /**
      * Get data from Fixtures directory
      *
+     * @todo method must return a cron tab definition
      * @param string $cronTabFilePath
      * @throws \Exception
      * @return array

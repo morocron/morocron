@@ -3,12 +3,16 @@
     "type": "library",
     "description": "",
     "keywords": ["crontab", "cron"],
-    "homepage": "http://github.com/bmaziere/morocron",
+    "homepage": "http://github.com/morocron/morocron",
     "license": "MIT",
     "authors": [
         {
             "name": "Benoit Mazière",
             "email": "benoit.maziere@gmail.com"
+        },
+        {
+            "name": "Abdoul N'Diaye",
+            "email": "abdoul.nd@gmail.com"
         }
     ],
     "require": {

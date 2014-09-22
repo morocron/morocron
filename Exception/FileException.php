@@ -16,7 +16,7 @@ namespace Morocron\Exception;
  * @package Morocron\Exception
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
-class FileException extends \RuntimeException
+class FileException extends \InvalidArgumentException
 {
     /**
      * File not found exception.

@@ -27,18 +27,17 @@ class CronTabGenerator
      *
      * @static
      * @param string $source
-     * @param $destination
+     * @param string $destination
      * @param null $strategy
      *
      * @return bool|int
      */
-    public static function createSortedCronTab($source, $destination, $strategy = null)
+    public static function createSortedCronTab($source, $destination, $strategy = SortedCronTabProcessor::FREQUENCY_STRATEGY)
     {
         $cronTabParser = new CronTabParser();
         $cronTabDefinition = $cronTabParser->computeData($source);
 
-        $sortedCronTabProcessor = new SortedCronTabProcessor();
-        $newCronTabDefinition = $sortedCronTabProcessor->sort($cronTabDefinition, $strategy);
+        $newCronTabDefinition = SortedCronTabProcessor::sort($cronTabDefinition, $strategy);
 
         return self::generateCronTabFile($destination, $newCronTabDefinition);
     }

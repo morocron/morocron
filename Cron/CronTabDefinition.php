@@ -22,6 +22,142 @@ namespace Morocron\Cron;
 class CronTabDefinition
 {
     /**
+     * Periodic cron definitions.
+     *
+     * @var array
+     */
+    protected $periodicCronDefinitions;
+
+    /**
+     * Non Periodic cron definitions.
+     *
+     * @var array
+     */
+    protected $nonPeriodicCronDefinitions;
+
+    /**
+     * Unreadable cron definitions.
+     *
+     * @var array
+     */
+    protected $unreadableCronDefinitions;
+
+    /**
+     * Get Periodic Cron Definitions.
+     *
+     * @return array
+     */
+    public function getPeriodicCronDefinitions()
+    {
+        return $this->periodicCronDefinitions;
+    }
+
+    /**
+     * Set Periodic Cron Definitions.
+     *
+     * @param array $periodicCronDefinitions
+     *
+     * @return $this
+     */
+    public function setPeriodicCronDefinitions(array $periodicCronDefinitions)
+    {
+        $this->periodicCronDefinitions = $periodicCronDefinitions;
+
+        return $this;
+    }
+
+    /**
+     * Add Periodic Cron Definition.
+     *
+     * @param CronDefinition $periodicCronDefinition
+     *
+     * @return $this
+     */
+    public function addPeriodicCronDefinition(CronDefinition $periodicCronDefinition)
+    {
+        $this->periodicCronDefinitions[] = $periodicCronDefinition;
+
+        return $this;
+    }
+
+    /**
+     * Get Non Periodic Cron Definitions
+     *
+     * @return array
+     */
+    public function getNonPeriodicCronDefinitions()
+    {
+        return $this->nonPeriodicCronDefinitions;
+    }
+
+    /**
+     * Set Non Periodic Cron Definitions
+     *
+     * @param array $nonPeriodicCronDefinitions
+     *
+     * @return $this
+     */
+    public function setNonPeriodicCronDefinitions(array $nonPeriodicCronDefinitions)
+    {
+        $this->nonPeriodicCronDefinitions = $nonPeriodicCronDefinitions;
+
+        return $this;
+    }
+
+    /**
+     * Add Non Periodic Cron Definition.
+     *
+     * @param CronDefinition $nonPeriodicCronDefinition
+     *
+     * @return $this
+     */
+    public function addNonPeriodicCronDefinition(CronDefinition $nonPeriodicCronDefinition)
+    {
+        $this->nonPeriodicCronDefinitions[] = $nonPeriodicCronDefinition;
+
+        return $this;
+    }
+
+    /**
+     * Get Unreadable Cron Definitions.
+     *
+     * @return array
+     */
+    public function getUnreadableCronDefinitions()
+    {
+        return $this->unreadableCronDefinitions;
+    }
+
+
+    /**
+     * Set Unreadable Cron Definitions.
+     *
+     * @param array $unreadableCronDefinitions
+     *
+     * @return $this
+     */
+    public function setUnreadableCronDefinitions(array $unreadableCronDefinitions)
+    {
+        $this->unreadableCronDefinitions = $unreadableCronDefinitions;
+
+        return $this;
+    }
+
+    /**
+     * Add Unreadable Cron Definition.
+     *
+     * @param CronDefinition $unreadableCronDefinition
+     *
+     * @return $this
+     */
+    public function addUnreadableCronDefinition(CronDefinition $unreadableCronDefinition)
+    {
+        $this->unreadableCronDefinitions[] = $unreadableCronDefinition;
+
+        return $this;
+    }
+
+    /**
      * Convert the cron definition to string.
      *
      * @return string

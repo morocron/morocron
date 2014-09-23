@@ -32,4 +32,18 @@ class FileException extends \InvalidArgumentException
     {
         return new self(sprintf('The file at path %s does not exist.', $path));
     }
+
+    /**
+     * No Cron Task Exception
+     *
+     * @static
+     *
+     * @param string $path
+     *
+     * @return FileException
+     */
+    public static function noCronTaskException($path)
+    {
+        return new self(sprintf('The file at path %s is empty.', $path));
+    }
 }

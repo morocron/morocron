@@ -13,6 +13,7 @@ namespace Morocron\Parser;
 
 use Cron\CronExpression;
 use Morocron\Cron\CronDefinition;
+use Morocron\Cron\CronTabDefinition;
 use Morocron\Exception\FileException;
 
 /**
@@ -23,55 +24,13 @@ use Morocron\Exception\FileException;
 class CronTabParser
 {
     /**
-     * Valid And Periodic Tasks
-     *
-     * @var array
-     */
-    protected $validAndPeriodicTasks;
-
-    /**
-     * Valid And Non Periodic Tasks
-     * @var array
-     */
-    protected $validAndNonPeriodicTasks;
-
-    /**
-     * Unreadable Tasks
-     * @var array
-     */
-    protected $unreadableTasks;
-
-    /**
-     * @return array
-     */
-    public function getValidAndNonPeriodicTasks()
-    {
-        return $this->validAndNonPeriodicTasks;
-    }
-
-    /**
-     * @return array
-     */
-    public function getValidAndPeriodicTasks()
-    {
-        return $this->validAndPeriodicTasks;
-    }
-
-    /**
-     * @return array
-     */
-    public function getUnreadableTasks()
-    {
-        return $this->unreadableTasks;
-    }
-
-    /**
      * Get data from Fixtures directory
      *
-     * @todo method must return a cron tab definition
      * @param string $cronTabFilePath
-     * @throws \Exception
-     * @return array
+     *
+     * @throws FileException
+     *
+     * @return CronTabDefinition
      */
     public function computeData($cronTabFilePath)
     {
@@ -81,7 +40,11 @@ class CronTabParser
 
         $data = file($cronTabFilePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        $this->setTasks($data);
+        if (is_null($data)) {
+            throw FileException::noCronTaskException($cronTabFilePath);
+        }
+
+        return $this->generateCronTabDefinition($data);
     }
 
     /**
@@ -89,26 +52,36 @@ class CronTabParser
      *
      * @param array $data
      *
-     * @return $this
+     * @return CronTabDefinition
      */
-    protected function setTasks(array $data)
+    protected function generateCronTabDefinition(array $data)
     {
+        $cronTabDefinition = new CronTabDefinition();
         foreach ($data as $task) {
             if (strpos(trim($task), '#') === 0) {
                 continue;
             }
 
             list($isReadable, $isPeriodic, $taskTimeDefinition, $taskDefinition) = $this->getCommand($task);
+
+            $method = null;
+
             if ($isReadable && $isPeriodic) {
-                $this->validAndPeriodicTasks[] = $this->fillInCronDefinition($taskTimeDefinition, $taskDefinition);
+                $method = 'addPeriodicCronDefinition';
             } elseif ($isReadable && !$isPeriodic) {
-                $this->validAndNonPeriodicTasks[] = $this->fillInCronDefinition($taskTimeDefinition, $taskDefinition);
+                $method = 'addNonPeriodicCronDefinition';
             } elseif (!$isReadable && trim($task) != '') {
-                $this->unreadableTasks[] = $this->fillInCronDefinition($taskTimeDefinition, $taskDefinition);
+                $method = 'addUnreadableCronDefinition';
+            }
+
+            if (!is_null($method)) {
+                $cronTabDefinition->{$method}($this->fillInCronDefinition($taskTimeDefinition, $taskDefinition));
+            } else {
+                // @todo log or error
             }
         }
 
-        return $this;
+        return $cronTabDefinition;
     }
 
     /**
@@ -117,7 +90,7 @@ class CronTabParser
      * @param string $taskTimeDefinition
      * @param string $taskDefinition
      *
-     * @return array
+     * @return CronDefinition
      */
     protected function fillInCronDefinition($taskTimeDefinition, $taskDefinition)
     {

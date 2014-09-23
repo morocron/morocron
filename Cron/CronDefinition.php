@@ -14,7 +14,10 @@ namespace Morocron\Cron;
 use Cron\CronExpression;
 
 /**
- * Class CronDefinition
+ * Class Cron Definition
+ *
+ * Representation of a cron task.
+ *
  * @package Morocron\Cron
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */

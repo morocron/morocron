@@ -11,34 +11,24 @@
 
 namespace Morocron\Command;
 
-use Morocron\Exception\FileException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Morocron\Generator\CronTabGenerator;
 
 /**
- * Class Sort Cron Command
+ * Class Validate Command
  * @package Morocron\Command
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
-class SortCronCommand extends Command
+class ValidateCommand extends Command
 {
     /**
-     * Path of the original cron tab file.
+     * Path cron tab file.
      *
      * @var string
      */
     protected $source;
-
-    /**
-     * Path of the new cron tab file.
-     *
-     * @var string
-     */
-    protected $destination;
 
     /**
      * Configures the current command.
@@ -48,10 +38,9 @@ class SortCronCommand extends Command
         parent::configure();
 
         $this
-            ->setName('sort-cron')
-            ->setDescription('Order the tasks execution of a cronTab file')
-            ->addArgument('source', InputArgument::REQUIRED, 'The original cron tab file.')
-            ->addArgument('destination', InputArgument::REQUIRED, 'The new cron tab file that will be created by the command');
+            ->setName('validate')
+            ->setDescription('Validate tasks of a cronTab file')
+            ->addArgument('source', InputArgument::REQUIRED, 'The original cron tab file.');
     }
 
     /**
@@ -68,7 +57,6 @@ class SortCronCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->source = $input->getArgument('source');
-        $this->destination = $input->getArgument('destination');
     }
 
     /**
@@ -81,9 +69,6 @@ class SortCronCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        return CronTabGenerator::createSortedCronTab(
-            (string)$input->getArgument('source'),
-            (string)$input->getArgument('destination')
-        );
+
     }
 }

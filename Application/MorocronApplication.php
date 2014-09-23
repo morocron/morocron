@@ -11,19 +11,24 @@
 namespace Morocron\Application;
 
 use Morocron\Command\SortCronCommand;
+use Morocron\Command\ValidateCommand;
 use Symfony\Component\Console\Application as AbstractApplication;
 
 /**
- * Class MorocronApplication
+ * Class Morocron Application
  * @package Morocron\Application
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
 class MorocronApplication extends AbstractApplication
 {
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         parent::__construct('morocron');
 
         $this->add(new SortCronCommand());
+        $this->add(new ValidateCommand());
     }
 }

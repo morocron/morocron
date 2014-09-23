@@ -12,7 +12,8 @@
 namespace Morocron\Exception;
 
 /**
- * Class FileException
+ * Class File Exception
+ *
  * @package Morocron\Exception
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */

@@ -17,6 +17,7 @@ use Morocron\Processor\SortedCronTabProcessor;
 
 /**
  * Class Cron Tab Generator
+ *
  * @package Morocron\Generator
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
@@ -26,6 +27,7 @@ class CronTabGenerator
      * Create Sorted Cron Tab
      *
      * @static
+     *
      * @param string $source
      * @param string $destination
      * @param null $strategy

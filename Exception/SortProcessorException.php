@@ -12,7 +12,8 @@
 namespace Morocron\Exception;
 
 /**
- * Class SortProcessorException
+ * Class Sort Processor Exception
+ *
  * @package Morocron\Exception
  * @author Abdoul N'Diaye <wn-a.ndiaye@lagardere-active.com>
  */

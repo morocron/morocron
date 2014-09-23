@@ -14,7 +14,6 @@ namespace Morocron\Parser;
 use Cron\CronExpression;
 use Morocron\Cron\CronDefinition;
 use Morocron\Exception\FileException;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Class CronTabParser

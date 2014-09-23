@@ -4,6 +4,7 @@
  * This file is part of the Morocron project.
  *
  * (c) Benoit Maziere <benoit.maziere@gmail.com>
+ * (c) Abdoul N'Diaye <abdoul.nd@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -174,7 +175,7 @@ class CronTabDefinition
             $methodName = 'get' . ucfirst($currentProperty);
             if (is_callable(array($this, $methodName))) {
                 $cronTab .= sprintf("%s\n\n", $currentProperty);
-                foreach ((array) $this->{$currentProperty} as $cronDefinition) {
+                foreach ((array)$this->{$currentProperty} as $cronDefinition) {
                     $cronTab .= sprintf("%s\n", $cronDefinition->convertToString());
                 }
             }

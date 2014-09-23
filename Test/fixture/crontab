@@ -21,8 +21,8 @@
 # 
 # m h  dom mon dow   command
 
-0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
-
 0 0,12 1 */2 * /sbin/ping -c 192.168.0.1; ls -la >>/var/log/cronrun
+
+0 5 * * * tar -zcf /var/backups/home.tgz /home/
 
 0 4 15-21 * 1 /command

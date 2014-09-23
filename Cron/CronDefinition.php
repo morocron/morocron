@@ -96,4 +96,14 @@ class CronDefinition
 
         return $this;
     }
+
+    /**
+     * Convert to String.
+     *
+     * @return string
+     */
+    public function convertToString()
+    {
+        return sprintf("%s    %s", $this->getDefinition()->getExpression(), $this->getCommand());
+    }
 }

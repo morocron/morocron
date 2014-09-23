@@ -38,10 +38,6 @@ class CronTabGenerator
     {
         $cronTabParser = new CronTabParser();
         $cronTabDefinition = $cronTabParser->computeData($source);
-
-        /**
-         * @todo complete sort method
-         */
         $newCronTabDefinition = SortedCronTabProcessor::sort($cronTabDefinition, $strategy);
 
         return self::generateCronTabFile($destination, $newCronTabDefinition);

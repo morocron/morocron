@@ -128,7 +128,6 @@ class CronTabDefinition
         return $this->unreadableCronDefinitions;
     }
 
-
     /**
      * Set Unreadable Cron Definitions.
      *
@@ -164,6 +163,23 @@ class CronTabDefinition
      */
     public function convertToString()
     {
-        return '';
+        $properties = array('periodicCronDefinitions', 'nonPeriodicCronDefinitions', 'unreadableCronDefinitions');
+
+        $cronTab = '';
+
+        foreach ($properties as $currentProperty) {
+            /**
+             * @var CronDefinition $cronDefinition
+             */
+            $methodName = 'get' . ucfirst($currentProperty);
+            if (is_callable(array($this, $methodName))) {
+                $cronTab .= sprintf("%s\n\n", $currentProperty);
+                foreach ((array) $this->{$currentProperty} as $cronDefinition) {
+                    $cronTab .= sprintf("%s\n", $cronDefinition->convertToString());
+                }
+            }
+        }
+
+        return $cronTab;
     }
 }

@@ -15,7 +15,8 @@ use Morocron\Cron\CronTabDefinition;
 use Morocron\Exception\SortProcessorException;
 
 /**
- * Class SortedCronTabProcessor
+ * Class Sorted Cron Tab Processor
+ *
  * @package Morocron\Processor
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
@@ -57,10 +58,17 @@ class SortedCronTabProcessor
      *
      * @param CronTabDefinition $cronTabDefinition
      *
-     * @return CronTabDefinition
+     * @return \Morocron\Cron\CronTabDefinition
      */
     public static function frequencySort(CronTabDefinition $cronTabDefinition)
     {
+        $periodicCronDefinitions = $cronTabDefinition->getPeriodicCronDefinitions();
 
+        // @todo sort periodic cron
+
+        $newCronTabDefinition = clone $cronTabDefinition;
+        $newCronTabDefinition->setPeriodicCronDefinitions($periodicCronDefinitions);
+
+        return $newCronTabDefinition;
     }
 }

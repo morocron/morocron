@@ -12,7 +12,6 @@
 
 namespace Morocron\Processor;
 
-use Morocron\Cron\CronDefinition;
 use Morocron\Cron\CronTabDefinition;
 use Morocron\Exception\SortProcessorException;
 

@@ -15,7 +15,7 @@ namespace Morocron\Cron;
 /**
  * Class Cron Tab Definition
  *
- * Representation of a cron tab.
+ * Cron tab representation.
  *
  * @package Morocron\Cron
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>

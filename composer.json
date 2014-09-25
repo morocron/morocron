@@ -1,7 +1,7 @@
 {
     "name": "morocron/morocron",
     "type": "library",
-    "description": "",
+    "description": "A Php library to cleanup and reorganize crons.",
     "keywords": ["crontab", "cron"],
     "homepage": "http://github.com/morocron/morocron",
     "license": "MIT",
@@ -25,5 +25,9 @@
     },
     "autoload": {
         "psr-4": { "Morocron\\": "" }
+    },
+    "scripts": {
+        "post-install-cmd": [],
+        "post-update-cmd": []
     }
 }

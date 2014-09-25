@@ -130,7 +130,7 @@ class CronTabParser
         if (strpos($task, '@') === 0) {
             $taskTimeDefinition = explode(' ', $task, 2);
             return array(
-                (count($taskTimeDefinition) == 2 and $this->getSpecialCronTimeDefinition($taskTimeDefinition[0])) ? $taskTimeDefinition[1] : false,
+                (count($taskTimeDefinition) == 2 && $this->getSpecialCronTimeDefinition($taskTimeDefinition[0])) ? $taskTimeDefinition[1] : false,
                 $this->isPeriodic($taskTimeDefinition[0]),
                 $this->getSpecialCronTimeDefinition($taskTimeDefinition[0]),
                 $taskTimeDefinition[1],

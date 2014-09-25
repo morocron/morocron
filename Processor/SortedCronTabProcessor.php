@@ -12,6 +12,7 @@
 
 namespace Morocron\Processor;
 
+use Morocron\Cron\CronDefinition;
 use Morocron\Cron\CronTabDefinition;
 use Morocron\Exception\SortProcessorException;
 
@@ -65,9 +66,24 @@ class SortedCronTabProcessor
     {
         $periodicCronDefinitions = $cronTabDefinition->getPeriodicCronDefinitions();
 
-        $newCronTabDefinition = clone $cronTabDefinition;
-        $newCronTabDefinition->setPeriodicCronDefinitions($periodicCronDefinitions);
+        $start = new \DateTime();
+        $end = clone($start);
+        $end = $end->add(\DateInterval::createFromDateString('1 day'));
+        $interval = \DateInterval::createFromDateString('1 minute');
+        $period = new \DatePeriod($start, $interval, $end);
+        $result = array();
 
-        return $newCronTabDefinition;
+        foreach ($period as $dt) {
+            /** @var \DateTime $dt */
+            $result[$dt->format('Y-m-d H:i')] = 0;
+            /** @var CronDefinition $task */
+            foreach ($periodicCronDefinitions as $task) {
+                $result[$dt->format('Y-m-d H:i')] += $task->getDefinition()->isDue($dt);
+            }
+        }
+
+        $cronTabDefinition->setPeriodicCronDefinitions($periodicCronDefinitions);
+
+        return $cronTabDefinition;
     }
 }

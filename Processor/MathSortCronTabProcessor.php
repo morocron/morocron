@@ -17,12 +17,12 @@ use Morocron\Cron\CronTabDefinition;
 use Morocron\Exception\SortProcessorException;
 
 /**
- * Class Sorted Cron Tab Processor
+ * Class Math Sort Cron Tab Processor
  *
  * @package Morocron\Processor
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
-class SortedCronTabProcessor
+class MathSortCronTabProcessor
 {
     const FREQUENCY_STRATEGY = 0;
 

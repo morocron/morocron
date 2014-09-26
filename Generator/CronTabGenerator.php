@@ -14,7 +14,7 @@ namespace Morocron\Generator;
 
 use Morocron\Cron\CronTabDefinition;
 use Morocron\Parser\CronTabParser;
-use Morocron\Processor\SortedCronTabProcessor;
+use Morocron\Processor\MathSortCronTabProcessor;
 
 /**
  * Class Cron Tab Generator
@@ -35,11 +35,11 @@ class CronTabGenerator
      *
      * @return bool|int
      */
-    public static function createSortedCronTab($source, $destination, $strategy = SortedCronTabProcessor::FREQUENCY_STRATEGY)
+    public static function createMathSortCronTab($source, $destination, $strategy = MathSortCronTabProcessor::FREQUENCY_STRATEGY)
     {
         $cronTabParser = new CronTabParser();
         $cronTabDefinition = $cronTabParser->computeData($source);
-        $newCronTabDefinition = SortedCronTabProcessor::sort($cronTabDefinition, $strategy);
+        $newCronTabDefinition = MathSortCronTabProcessor::sort($cronTabDefinition, $strategy);
 
         return self::generateCronTabFile($destination, $newCronTabDefinition);
     }

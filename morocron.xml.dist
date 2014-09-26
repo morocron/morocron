@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Add appendixes -->
+
+<morocron bootstrap="">
+    <sortsuites>
+        <sortsuite name="default">
+            <sorter>Morocron\Sorter\...Sorter</sorter>
+        </sortsuite>
+    </sortsuites>
+    <validatorsuites>
+        <validatorsuite name="default">
+            <validator>Morocron\Sorter\...Validator</validator>
+        </validatorsuite>
+    </validatorsuites>
+</morocron>

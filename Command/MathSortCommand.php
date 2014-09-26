@@ -19,11 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Morocron\Generator\CronTabGenerator;
 
 /**
- * Class Sort Cron Command
+ * Class Math Sort Command
  * @package Morocron\Command
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
-class SortCronCommand extends Command
+class MathSortCommand extends Command
 {
     /**
      * Path of the original cron tab file.
@@ -47,7 +47,7 @@ class SortCronCommand extends Command
         parent::configure();
 
         $this
-            ->setName('sort-cron')
+            ->setName('math-sort')
             ->setDescription('Order the tasks execution of a cronTab file')
             ->addArgument('source', InputArgument::REQUIRED, 'The original cron tab file.')
             ->addArgument('destination', InputArgument::REQUIRED, 'The new cron tab file that will be created by the command');
@@ -80,7 +80,7 @@ class SortCronCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        return CronTabGenerator::createSortedCronTab(
+        return CronTabGenerator::createMathSortCronTab(
             (string)$input->getArgument('source'),
             (string)$input->getArgument('destination')
         );

@@ -20,11 +20,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Morocron\Generator\CronTabGenerator;
 
 /**
- * Class Sort Command
+ * Class Task Command
  * @package Morocron\Command
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
-class SortCommand extends Command
+class TaskCommand extends Command
 {
     /**
      * Path of the original cron tab file.
@@ -48,11 +48,14 @@ class SortCommand extends Command
         parent::configure();
 
         $this
-            ->setName('sort')
-            ->setDescription('')
-            ->addArgument('source', InputArgument::REQUIRED, 'The original cron tab file.')
-            ->addArgument('destination', InputArgument::REQUIRED, 'The new cron tab file that will be created by the command')
-            ->addOption('configuration', 'c', InputOption::VALUE_REQUIRED, 'Read configuration from morocron XML file.', 'morocron.xml.dist');
+            ->setName('execute-tasks')
+            ->setDescription('Execute a task suites on a cron tab')
+            ->addOption('source', 's', InputOption::VALUE_OPTIONAL, 'The original cron tab file.')
+            ->addOption('input', 'i', InputOption::VALUE_REQUIRED, 'Get input content of a command and parse result as a cron tab', 'crontab -l')
+            ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'The new cron tab file that will be created by the command')
+            ->addOption('configuration', 'c', InputOption::VALUE_REQUIRED, 'Read configuration from morocron XML file.', 'morocron.xml.dist')            ->addOption('configuration', 'c', InputOption::VALUE_REQUIRED, 'Read configuration from morocron XML file.', 'morocron.xml.dist')
+            ->addOption('tasks', 't', InputOption::VALUE_REQUIRED, 'The task suites that will be execute. Values are defined in configuration file', 'default')
+        ;
     }
 
     /**
@@ -80,7 +83,6 @@ class SortCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
     }
 }
 

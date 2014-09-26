@@ -15,7 +15,7 @@ namespace Morocron\Application;
 use Symfony\Component\Console\Application as AbstractApplication;
 use Morocron\Command\MathSortCommand;
 use Morocron\Command\ValidateCommand;
-use Morocron\Command\SortCommand;
+use Morocron\Command\TaskCommand;
 
 /**
  * Class Morocron Application
@@ -32,7 +32,7 @@ class MorocronApplication extends AbstractApplication
         parent::__construct('morocron');
 
         $this->add(new MathSortCommand());
-        $this->add(new SortCommand());
+        $this->add(new TaskCommand());
         $this->add(new ValidateCommand());
     }
 }

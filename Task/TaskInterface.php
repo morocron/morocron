@@ -10,22 +10,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Morocron\Sorter;
+namespace Morocron\Task;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Morocron\Cron\CronTabDefinition;
 
 /**
- * Sorter Interface
+ * Task Interface
  *
  * @package Morocron\Sorter
  * @author Abdoul N'Diaye <wn-a.ndiaye@lagardere-active.com>
  */
-interface SorterInterface
+interface TaskInterface
 {
     /**
-     * Sort a cron tab definition
+     * Execute a task on a cron tab definition
      *
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -33,5 +33,5 @@ interface SorterInterface
      *
      * @return CronTabDefinition
      */
-    public function sort(InputInterface $input, OutputInterface $output, CronTabDefinition $cronTabDefinition);
+    public function execute(InputInterface $input, OutputInterface $output, CronTabDefinition $cronTabDefinition);
 }

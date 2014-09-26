@@ -3,11 +3,11 @@
 <!-- Add appendixes -->
 
 <morocron bootstrap="">
-    <sortsuites>
-        <sortsuite name="default">
-            <sorter>Morocron\Sorter\...Sorter</sorter>
-        </sortsuite>
-    </sortsuites>
+    <tasksuites>
+        <tasksuite name="default">
+            <task>Morocron\Sorter\...Task</task>
+        </tasksuite>
+    </tasksuites>
     <validatorsuites>
         <validatorsuite name="default">
             <validator>Morocron\Sorter\...Validator</validator>

@@ -12,6 +12,7 @@
 
 namespace Morocron\Sorter;
 
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Morocron\Cron\CronTabDefinition;
 
@@ -23,5 +24,14 @@ use Morocron\Cron\CronTabDefinition;
  */
 interface SorterInterface
 {
-    public function sort(OutputInterface $output, CronTabDefinition $cronTabDefinition);
+    /**
+     * Sort a cron tab definition
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param CronTabDefinition $cronTabDefinition
+     *
+     * @return CronTabDefinition
+     */
+    public function sort(InputInterface $input, OutputInterface $output, CronTabDefinition $cronTabDefinition);
 }

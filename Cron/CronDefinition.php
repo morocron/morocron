@@ -13,6 +13,9 @@
 namespace Morocron\Cron;
 
 use Cron\CronExpression;
+use Morocron\Cron\DefinitionPart;
+use Morocron\Cron\MinuteDefinition;
+use Morocron\Cron\HourDefinition;
 
 /**
  * Class Cron Definition
@@ -65,6 +68,31 @@ class CronDefinition
      */
     protected $step;
 
+    /**
+     * @var DefinitionPart
+     */
+    protected $minuteDefinition;
+
+    /**
+     * @var DefinitionPart
+     */
+    protected $hourDefinition;
+
+    /**
+     * @var DefinitionPart
+     */
+    protected $dayDefinition;
+
+    /**
+     * @var DefinitionPart
+     */
+    protected $monthDefinition;
+
+    /**
+     * @var DefinitionPart
+     */
+    protected $yearDefinition;
+
 
     /**
      * Constructor.
@@ -76,6 +104,29 @@ class CronDefinition
     {
         $this->definition = $definition;
         $this->command = $command;
+        $this->initDefinitionParts($this->getDefinition()->getExpression());
+    }
+
+    /**
+     * @param string $expression
+     *
+     * @throws \LogicException
+     * @return $this
+     */
+    public function initDefinitionParts($expression)
+    {
+        $definitionParts = explode(' ', trim($expression));
+        if (count($definitionParts) !== 5) {
+            throw new \LogicException(sprintf('Unable to split the cron definition "%s"'));
+        }
+
+        $this->minuteDefinition = new MinuteDefinition($definitionParts[0]);
+        $this->hourDefinition = new HourDefinition($definitionParts[1]);
+        $this->dayDefinition = new DefinitionPart($definitionParts[2]);
+        $this->monthDefinition = new DefinitionPart($definitionParts[3]);
+        $this->yearDefinition = new DefinitionPart($definitionParts[4]);
+
+        return $this;
     }
 
     /**

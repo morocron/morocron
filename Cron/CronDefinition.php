@@ -39,6 +39,34 @@ class CronDefinition
     protected $command;
 
     /**
+     * @var boolean $isPeriodic
+     */
+    protected $isPeriodic;
+
+    /**
+     * period value in minutes
+     *
+     * @var int $period
+     */
+    protected $period;
+
+    /**
+     * phaseShift value in minutes
+     *
+     * @var int $phaseShift
+     */
+    protected $phaseShift;
+
+
+    /**
+     * duration of the periodic behavior in minutes
+     *
+     * @var int $step
+     */
+    protected $step;
+
+
+    /**
      * Constructor.
      *
      * @param CronExpression $definition
@@ -107,4 +135,70 @@ class CronDefinition
     {
         return sprintf("%s    %s", $this->getDefinition()->getExpression(), $this->getCommand());
     }
+
+    /**
+     * @param boolean $isPeriodic
+     */
+    public function setIsPeriodic($isPeriodic)
+    {
+        $this->isPeriodic = $isPeriodic;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPeriodic()
+    {
+        return $this->isPeriodic;
+    }
+
+    /**
+     * @param int $period
+     */
+    public function setPeriod($period)
+    {
+        $this->period = $period;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPeriod()
+    {
+        return $this->period;
+    }
+
+    /**
+     * @param int $phaseShift
+     */
+    public function setPhaseShift($phaseShift)
+    {
+        $this->phaseShift = $phaseShift;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhaseShift()
+    {
+        return $this->phaseShift;
+    }
+
+    /**
+     * @param int $step
+     */
+    public function setStep($step)
+    {
+        $this->step = $step;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStep()
+    {
+        return $this->step;
+    }
+
+
 }

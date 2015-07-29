@@ -13,8 +13,7 @@
 namespace Morocron\Generator;
 
 use Morocron\Cron\CronTabDefinition;
-use Morocron\Parser\CronTabParser;
-use Morocron\Processor\MathSortCronTabProcessor;
+use Morocron\Processor\SortCronTabProcessor;
 
 /**
  * Class Cron Tab Generator
@@ -27,34 +26,29 @@ class CronTabGenerator
     /**
      * Create Sorted Cron Tab
      *
-     * @static
-     *
      * @param string $source
      * @param string $destination
-     * @param null $strategy
+     * @param int $strategy
      *
      * @return bool|int
      */
-    public static function createMathSortCronTab($source, $destination, $strategy = MathSortCronTabProcessor::FREQUENCY_STRATEGY)
+    public function createSortedCronTab($source, $destination, $strategy = SortCronTabProcessor::FREQUENCY_STRATEGY)
     {
-        $cronTabParser = new CronTabParser();
-        $cronTabDefinition = $cronTabParser->computeData($source);
-        $newCronTabDefinition = MathSortCronTabProcessor::sort($cronTabDefinition, $strategy);
+        $SortCronTabProcessor = new SortCronTabProcessor();
+        $newCronTabDefinition = $SortCronTabProcessor->computeDataAndSort($source, $strategy);
 
-        return self::generateCronTabFile($destination, $newCronTabDefinition);
+        return $this->generateCronTabFile($destination, $newCronTabDefinition);
     }
 
     /**
      * Generate Cron Tab File
-     *
-     * @static
      *
      * @param string $destination
      * @param CronTabDefinition $cronTabDefinition
      *
      * @return int|boolean
      */
-    public static function generateCronTabFile($destination, CronTabDefinition $cronTabDefinition)
+    public function generateCronTabFile($destination, CronTabDefinition $cronTabDefinition)
     {
         return file_put_contents($destination, $cronTabDefinition->convertToString()) !== false ? true : false;
     }

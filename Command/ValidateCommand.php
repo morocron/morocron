@@ -24,11 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ValidateCommand extends Command
 {
-    /**
-     * Path cron tab file.
-     *
-     * @var string
-     */
+    /** @var string $source */
     protected $source;
 
     /**

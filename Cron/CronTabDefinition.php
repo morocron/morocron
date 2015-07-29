@@ -22,26 +22,17 @@ namespace Morocron\Cron;
  */
 class CronTabDefinition
 {
-    /**
-     * Periodic cron definitions.
-     *
-     * @var array
-     */
-    protected $periodicCronDefinitions;
+    /** @var array $periodicCronDefinitions */
+    protected $periodicCronDefinitions = array();
 
-    /**
-     * Non Periodic cron definitions.
-     *
-     * @var array
-     */
-    protected $nonPeriodicCronDefinitions;
+    /** @var array $nonPeriodicCronDefinitions */
+    protected $nonPeriodicCronDefinitions = array();
 
-    /**
-     * Unreadable cron definitions.
-     *
-     * @var array
-     */
-    protected $unreadableCronDefinitions;
+    /** @var array $unreadableCronDefinitions */
+    protected $unreadableCronDefinitions = array();
+
+    /** @var array $distribution */
+    protected $distribution = array();
 
     /**
      * Get Periodic Cron Definitions.
@@ -158,6 +149,30 @@ class CronTabDefinition
     }
 
     /**
+     * Get Distribution Cron Definitions.
+     *
+     * @return array
+     */
+    public function getDistribution()
+    {
+        return $this->distribution;
+    }
+
+    /**
+     * Set Distribution Cron Definitions.
+     *
+     * @param array $distribution
+     *
+     * @return $this
+     */
+    public function setDistribution($distribution)
+    {
+        $this->distribution = $distribution;
+
+        return $this;
+    }
+
+    /**
      * Convert the cron definition to string.
      *
      * @return string
@@ -165,20 +180,18 @@ class CronTabDefinition
     public function convertToString()
     {
         $properties = array('periodicCronDefinitions', 'nonPeriodicCronDefinitions', 'unreadableCronDefinitions');
-
         $cronTab = '';
 
         foreach ($properties as $currentProperty) {
-            /**
-             * @var CronDefinition $cronDefinition
-             */
+            /** @var CronDefinition $cronDefinition */
             $methodName = 'get' . ucfirst($currentProperty);
             if (is_callable(array($this, $methodName))) {
-                $cronTab .= sprintf("%s\n\n", $currentProperty);
+                $cronTab .= sprintf("#%s\n\n", $currentProperty);
                 foreach ((array)$this->{$currentProperty} as $cronDefinition) {
                     $cronTab .= sprintf("%s\n", $cronDefinition->convertToString());
                 }
             }
+            $cronTab = sprintf("%s\n", $cronTab);
         }
 
         return $cronTab;

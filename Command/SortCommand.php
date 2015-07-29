@@ -13,16 +13,18 @@
 namespace Morocron\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Morocron\Generator\CronTabGenerator;
 
 /**
- * Class Task Command
+ * Class Sort Command
+ *
  * @package Morocron\Command
  * @author Abdoul N'Diaye <abdoul.nd@gmail.com>
  */
-class TaskCommand extends Command
+class SortCommand extends Command
 {
     /** @var string $source */
     protected $source;
@@ -35,17 +37,10 @@ class TaskCommand extends Command
      */
     protected function configure()
     {
-        parent::configure();
-
         $this
-            ->setName('execute-tasks')
-            ->setDescription('Execute a task suites on a cron tab')
-            ->addOption('source', 's', InputOption::VALUE_OPTIONAL, 'The original cron tab file.')
-            ->addOption('input', 'i', InputOption::VALUE_REQUIRED, 'Get input content of a command and parse result as a cron tab', 'crontab -l')
-            ->addOption('destination', 'd', InputOption::VALUE_REQUIRED, 'The new cron tab file that will be created by the command')
-            ->addOption('configuration', 'c', InputOption::VALUE_REQUIRED, 'Read configuration from morocron XML file.', 'morocron.xml.dist')            ->addOption('configuration', 'c', InputOption::VALUE_REQUIRED, 'Read configuration from morocron XML file.', 'morocron.xml.dist')
-            ->addOption('tasks', 't', InputOption::VALUE_REQUIRED, 'The task suites that will be execute. Values are defined in configuration file', 'default')
-        ;
+            ->setName('sort')
+            ->setDescription('Order the tasks execution of a cronTab file')
+            ->addArgument('source', InputArgument::REQUIRED, 'The original cron tab file.');
     }
 
     /**
@@ -61,6 +56,8 @@ class TaskCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
+        $this->source = (string) $input->getArgument('source');
+        $this->destination = sprintf("%s-reordered", $this->source);
     }
 
     /**
@@ -73,6 +70,12 @@ class TaskCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $cronTabGenerator = new CronTabGenerator();
+
+        return $cronTabGenerator->createSortedCronTab(
+            $this->source,
+            $this->destination
+        );
     }
 }
 

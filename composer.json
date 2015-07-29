@@ -17,11 +17,12 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/console": ">=2.5",
+        "symfony/console": "2.7.*",
         "mtdowling/cron-expression": "1.0.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.1"
+        "phpunit/phpunit": "~4.1",
+        "symfony/var-dumper": "2.7.*"
     },
     "autoload": {
         "psr-4": { "Morocron\\": "" }

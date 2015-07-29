@@ -63,7 +63,7 @@ class CronTabParser
                 continue;
             }
 
-            list($isReadable, $isPeriodic, $taskTimeDefinition, $taskDefinition) = $this->getCommand($task);
+            list($isReadable, $isPeriodic, $taskTimeDefinition, $taskDefinition, $periodicalRange, $period) = $this->getCommand($task);
 
             $method = null;
 
@@ -76,7 +76,7 @@ class CronTabParser
             }
 
             if (!is_null($method)) {
-                $cronTabDefinition->{$method}($this->fillInCronDefinition($taskTimeDefinition, $taskDefinition));
+                $cronTabDefinition->{$method}($this->fillInCronDefinition($taskTimeDefinition, $taskDefinition, $periodicalRange, $period));
             } else {
                 // @todo log or error
             }
@@ -90,14 +90,18 @@ class CronTabParser
      *
      * @param string $taskTimeDefinition
      * @param string $taskDefinition
+     * @param $periodicalRange
+     * @param $period
      *
      * @return CronDefinition
      */
-    protected function fillInCronDefinition($taskTimeDefinition, $taskDefinition)
+    protected function fillInCronDefinition($taskTimeDefinition, $taskDefinition, $periodicalRange, $period)
     {
         return new CronDefinition(
             CronExpression::factory($taskTimeDefinition),
-            trim($taskDefinition)
+            trim($taskDefinition),
+            $periodicalRange,
+            $period
         );
     }
 
@@ -110,7 +114,11 @@ class CronTabParser
      */
     protected function isPeriodic($taskTimeDefinition)
     {
-        if (strpos($taskTimeDefinition, ',') || strpos($taskTimeDefinition, '-')) {
+        $taskTimeDefinitionExploded = explode(' ', $taskTimeDefinition);
+
+        if (strpos($taskTimeDefinition, ',')
+            || strpos($taskTimeDefinition, '-')
+            || (preg_match('/[0-9\-,]+/', $taskTimeDefinitionExploded[2]) && preg_match('/[0-9\-,]+/', $taskTimeDefinitionExploded[4]))) {
             return false;
         }
 
@@ -129,21 +137,110 @@ class CronTabParser
         $task = trim($task);
         if (strpos($task, '@') === 0) {
             $taskTimeDefinition = explode(' ', $task, 2);
-            return array(
-                (count($taskTimeDefinition) == 2 && $this->getSpecialCronTimeDefinition($taskTimeDefinition[0])) ? $taskTimeDefinition[1] : false,
-                $this->isPeriodic($taskTimeDefinition[0]),
-                $this->getSpecialCronTimeDefinition($taskTimeDefinition[0]),
+            $isPeriodic = $this->isPeriodic($taskTimeDefinition[0]);
+            $specialCronTimeDefinition = $this->getSpecialCronTimeDefinition($taskTimeDefinition[0]);
+            $taskTimeDefinitionExploded = explode(' ', $specialCronTimeDefinition);
+
+            $cronTimeDefinition = array(
+                (count($taskTimeDefinition) === 2 && $specialCronTimeDefinition) ? $taskTimeDefinition[1] : false,
+                $isPeriodic,
+                $specialCronTimeDefinition,
                 $taskTimeDefinition[1],
             );
         } else {
             $taskTimeDefinition = explode(' ', $task, 6);
-            return array(
+            $standardCronTimeDefinition = $this->getStandardCronTimeDefinition($taskTimeDefinition);
+            $taskTimeDefinitionExploded = explode(' ', $standardCronTimeDefinition);
+            $isPeriodic = $this->isPeriodic($standardCronTimeDefinition);
+
+            $cronTimeDefinition = array(
                 (count($taskTimeDefinition) > 5) ? $taskTimeDefinition[5] : false,
-                $this->isPeriodic($this->getStandardCronTimeDefinition($taskTimeDefinition)),
-                $this->getStandardCronTimeDefinition($taskTimeDefinition),
+                $isPeriodic,
+                $standardCronTimeDefinition,
                 $taskTimeDefinition[5],
             );
         }
+        $periodicalRange = $this->getPeriodicalRange($taskTimeDefinitionExploded);
+
+        $cronTimeDefinition = array_merge($cronTimeDefinition, array(
+            $isPeriodic ? $periodicalRange : null,
+            ($isPeriodic && $periodicalRange) ? $this->getPeriod($taskTimeDefinition, $periodicalRange) : null,
+        ));
+
+        return $cronTimeDefinition;
+    }
+
+    /**
+     * Get Periodical Range from cron time expression
+     *
+     * @param array $taskTimeDefinition
+     *
+     * @return string|bool
+     */
+    protected function getPeriodicalRange(array $taskTimeDefinition)
+    {
+        if (count($taskTimeDefinition) === 5) {
+            if ($taskTimeDefinition[4] === '*' && $taskTimeDefinition[3] === '*' && $taskTimeDefinition[2] === '*' && $taskTimeDefinition[1] === '*' && $taskTimeDefinition[0] === '*') {
+                return 'minute';
+            } elseif ($taskTimeDefinition[4] === '*' && $taskTimeDefinition[3] === '*' && $taskTimeDefinition[2] === '*' && $taskTimeDefinition[1] === '*') {
+                return 'hour';
+            } elseif ($taskTimeDefinition[4] === '*' && $taskTimeDefinition[3] === '*' && $taskTimeDefinition[2] === '*') {
+                return 'day';
+            } elseif ($taskTimeDefinition[4] === '*' && $taskTimeDefinition[3] === '*') {
+                return 'month';
+            } elseif ($taskTimeDefinition[4] === '*') {
+                return 'week';
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * Get Period from cron time expression
+     *
+     * @param array $taskTimeDefinition
+     * @param $periodicalRange
+     *
+     * @return int|null
+     */
+    protected function getPeriod(array $taskTimeDefinition, $periodicalRange)
+    {
+        switch ($periodicalRange) {
+            case 'minute':
+                return 1;
+                break;
+            case 'hour':
+                if (preg_match('/^(\*\/)?(\d+)$/', $taskTimeDefinition[0], $matches)) {
+                    if (isset($matches[1]) && $matches[1] === '*/') {
+                        return $matches[2];
+                    } else {
+                        return 60;
+                    }
+                }
+                break;
+            case 'day':
+                if (preg_match('/^(\*\/)?(\d+)$/', $taskTimeDefinition[1], $matches)) {
+                    if (isset($matches[1]) && $matches[1] === '*/') {
+                        return $matches[2] * 60;
+                    } else {
+                        return 60 * 24;
+                    }
+                }
+                break;
+            case 'week':
+//                @todo
+                return null;
+                break;
+            case 'month':
+//                @todo
+                return null;
+                break;
+            default:
+                return null;
+        }
+
+        return null;
     }
 
     /**

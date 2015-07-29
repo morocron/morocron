@@ -24,30 +24,35 @@ use Cron\CronExpression;
  */
 class CronDefinition
 {
-    /**
-     * Cron Definition.
-     *
-     * @var CronExpression
-     */
+    /** @var CronExpression $definition */
     protected $definition;
 
-    /**
-     * Command.
-     *
-     * @var string
-     */
+    /** @var string $command */
     protected $command;
+
+    /** @var string $periodicalRange */
+    protected $periodicalRange;
+
+    /** @var int $period */
+    protected $period;
+
+    /** @var int $offset */
+    protected $offset = 0;
 
     /**
      * Constructor.
      *
      * @param CronExpression $definition
      * @param string $command
+     * @param null $periodicalRange
+     * @param null $period
      */
-    public function __construct(CronExpression $definition, $command)
+    public function __construct(CronExpression $definition, $command, $periodicalRange, $period)
     {
         $this->definition = $definition;
         $this->command = $command;
+        $this->periodicalRange = $periodicalRange;
+        $this->period = (int) $period;
     }
 
     /**
@@ -94,6 +99,76 @@ class CronDefinition
     public function setCommand($command)
     {
         $this->command = $command;
+
+        return $this;
+    }
+
+
+    /**
+     * Get PeriodRange.
+     *
+     * @return string
+     */
+    public function getPeriodicalRange()
+    {
+        return $this->periodicalRange;
+    }
+
+    /**
+     * Set PeriodRange.
+     *
+     * @param string $periodicalRange
+     * @return $this
+     */
+    public function setPeriodicalRange($periodicalRange)
+    {
+        $this->periodicalRange = $periodicalRange;
+
+        return $this;
+    }
+
+    /**
+     * Get Period.
+     *
+     * @return int
+     */
+    public function getPeriod()
+    {
+        return $this->period;
+    }
+
+    /**
+     * Set Period.
+     *
+     * @param int $period
+     * @return $this
+     */
+    public function setPeriod($period)
+    {
+        $this->period = $period;
+
+        return $this;
+    }
+
+    /**
+     * Get Offset.
+     *
+     * @return int
+     */
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * Set Offset.
+     *
+     * @param int $offset
+     * @return $this
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = $offset;
 
         return $this;
     }

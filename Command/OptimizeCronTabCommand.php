@@ -12,6 +12,7 @@
 
 namespace Morocron\Command;
 
+use Morocron\Processor\DistributionCronTabProcessor;
 use Morocron\Processor\SortCronTabProcessor;
 use Morocron\Processor\OptimizeCronTabProcessor;
 use Symfony\Component\Console\Command\Command;
@@ -83,6 +84,13 @@ class OptimizeCronTabCommand extends Command
 
         $cronTabGenerator = new CronTabGenerator();
         $cronTabGenerator->generateCronTabFile($this->destination, $newCronTabDefinition);
+
+        $distributionCronTabProcessor = new DistributionCronTabProcessor();
+        $distributionCronTabProcessor->compute($actualCronTabDefinition);
+        $distributionCronTabProcessor->compute($newCronTabDefinition);
+
+        file_put_contents((string) sprintf("%s-distribution", $this->source), $actualCronTabDefinition->getDistribution());
+        file_put_contents((string) sprintf("%s-distribution", $this->destination), $newCronTabDefinition->getDistribution());
     }
 }
 

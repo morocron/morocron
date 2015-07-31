@@ -26,6 +26,11 @@
 #
 # m h  dom mon dow   command
 
+# Unreadable crons
+# ...............
+
+__UNREADABLE_CRONS__
+
 # Periodical crons
 # ...............
 
@@ -35,9 +40,3 @@ __PERIODICAL_CRONS__
 # ...............
 
 __NON_PERIODICAL_CRONS__
-
-# Unreadable crons
-# ...............
-
-__UNREADABLE_CRONS__
-

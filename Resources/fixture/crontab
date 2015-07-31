@@ -35,6 +35,9 @@
 * * * * *    tar -zcf /var/backups/bbbb.tgz /bbbb/
 5 * * * *    tar -zcf /var/backups/var.tgz /var/
 */3 * * * *  tar -zcf /var/backups/lllll.tgz /llllll
+*/3 * * * *  tar -zcf /var/backups/qqqqq.tgz /qqqqqq
+*/3 * * * *  tar -zcf /var/backups/rrrrrr.tgz /rrrrrr
+*/3 * * * *  tar -zcf /var/backups/ssssss.tgz /sssss
 */5 * * * *  tar -zcf /var/backups/son.tgz /home/Son
 */3 * * * *  tar -zcf /var/backups/ooooo.tgz /ooooo
 */2 * * * *  tar -zcf /var/backups/projects.tgz /home/Projects

@@ -179,7 +179,7 @@ class CronTabDefinition
      */
     public function convertToString()
     {
-        $properties = array('periodicCronDefinitions', 'nonPeriodicCronDefinitions', 'unreadableCronDefinitions');
+        $properties = array('unreadableCronDefinitions', 'periodicCronDefinitions', 'nonPeriodicCronDefinitions');
         $cronTab = '';
 
         foreach ($properties as $currentProperty) {

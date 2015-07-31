@@ -34,11 +34,6 @@ if [ "$CURRENT_BRANCH" != "${MASTER_BRANCH_NAME}" ]; then
     exit;
 else
     echo -e "${yellow}Now on branch '${MASTER_BRANCH_NAME}'"
-    echo -e "Starting merge process with parameters:
-        CURRENT_BRANCH : $CURRENT_BRANCH
-        REVISION : $REVISION
-        RELEASE_VERSION : ${RELEASE_VERSION}-RELEASE
-        DATEOFDEPLOY : $DATEOFDEPLOY ${norm}";
 fi
 
 #Merge process
@@ -50,7 +45,7 @@ if [ $? -eq 0 ]; then
     $GIT tag -a $RELEASE_VERSION -m "Tagging ${MASTER_BRANCH_NAME} branch ${RELEASE_VERSION}" && git push --tags
     echo -e "${green}SUCCES : Merge release ${DEVELOP_BRANCH_NAME} into ${MASTER_BRANCH_NAME} succedded${norm}"
 else
-    echo -e "${red}FAILED : Merge release ${RELEASE_VERSION}-RELEASE into ${MASTER_BRANCH_NAME} failed"
+    echo -e "${red}FAILED : Merge ${DEVELOP_BRANCH_NAME} into ${MASTER_BRANCH_NAME} failed"
     echo -e "Please verify the merge. An error occured. Fix it before websync.${norm}"
     exit;
 fi

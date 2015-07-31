@@ -39,10 +39,10 @@ fi
 #Merge process
 #-------------
 echo -e "${yellow}Start merging ${DEVELOP_BRANCH_NAME} into ${MASTER_BRANCH_NAME}${norm}"
-#$GIT merge ${DEVELOP_BRANCH_NAME} -m "Merge ${DEVELOP_BRANCH_NAME} into ${MASTER_BRANCH_NAME}"
+$GIT merge ${DEVELOP_BRANCH_NAME} -m "Merge ${DEVELOP_BRANCH_NAME} into ${MASTER_BRANCH_NAME}"
 if [ $? -eq 0 ]; then
-#    $GIT push
-#    $GIT tag -a ${RELEASE_VERSION} -m "Tagging ${MASTER_BRANCH_NAME} branch ${RELEASE_VERSION}" && git push --tags
+    $GIT push
+    $GIT tag -a ${RELEASE_VERSION} -m "Tagging ${MASTER_BRANCH_NAME} branch ${RELEASE_VERSION}" && git push --tags
     echo -e "${green}SUCCES : Merge release ${DEVELOP_BRANCH_NAME} into ${MASTER_BRANCH_NAME} succedded${norm}"
 else
     echo -e "${red}FAILED : Merge ${DEVELOP_BRANCH_NAME} into ${MASTER_BRANCH_NAME} failed"

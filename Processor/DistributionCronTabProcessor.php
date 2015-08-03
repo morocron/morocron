@@ -56,19 +56,21 @@ class DistributionCronTabProcessor
         $period = $this->getPeriodDefinitionForDistribution();
         $oneMinuteCronCount = $this->getOneMinutePeriodCronCount($cronDefinitions);
 
-        foreach ($period as $dt) {
+        foreach ($period as $index => $dt) {
+            $distribution[$index]['time'] = $dt->format('Y-m-d H:i');
+            $distribution[$index]['hits'] = 0;
             foreach ($cronDefinitions as $cronDefinition) {
+                /** @var CronDefinition $cronDefinition */
                 if ($cronDefinition->getPeriod() !== 1) {
-                    /** @var CronDefinition $cronDefinition */
                     $cronExpression = $cronDefinition->getDefinition();
                     /** @var CronExpression $cronExpression */
                     if ($cronExpression->isDue($dt)) {
                         /** @var DateTime $dt */
-                        $distribution[$dt->format('Y-m-d H:i')]++;
+                        $distribution[$index]['hits'] += 1;
                     }
                 }
             }
-            $distribution[$dt->format('Y-m-d H:i')] += $oneMinuteCronCount;
+            $distribution[$index]['hits'] += $oneMinuteCronCount;
         }
 
         return json_encode($distribution);

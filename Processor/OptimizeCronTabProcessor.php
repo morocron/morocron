@@ -69,7 +69,7 @@ class OptimizeCronTabProcessor
             $currentPeriodCronDefinitions = $cronDefinitionSortedByPeriod[$period];
             foreach ($currentPeriodCronDefinitions as $index => $currentPeriodCronDefinition) {
                 /** @var CronDefinition $currentPeriodCronDefinition */
-                $currentPeriodCronDefinition->setOffset($index % $period);
+                $currentPeriodCronDefinition->setOffset(fmod($index, $period));
                 $newCurrentPeriodCronDefinition = $this->computeCrontPartDefinition($currentPeriodCronDefinition);
                 $newPeriodicCronTabDefinitions[] = $newCurrentPeriodCronDefinition;
             }
